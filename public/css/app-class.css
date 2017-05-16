@@ -1,0 +1,35 @@
+.form-actions {
+  border-top: 1px;
+}
+.form-alerts {
+  margin-top: 20px;
+}
+
+
+.padding-top-0 {
+  padding-top: 0px;
+}
+.padding-bottom-0 {
+  padding-bottom: 0px;
+}
+.panel-body {
+  padding-top: 0px;
+  padding-bottom: 0px;
+}
+.panel-page {
+  margin-top: 15px;
+}
+
+.progress {
+  height: 30px;
+  margin: 0px;
+}
+.progress-bar {
+    height: 30px;
+    margin: 0px;
+    line-height: 30px;
+}
+
+.table {
+  margin: 0px;
+}
