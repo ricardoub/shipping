@@ -1,0 +1,23 @@
+{
+  "name": "shipping",
+  "description": "",
+  "main": "",
+  "authors": [
+    "Ricardo Bomfim <ricardoub@gmail.com>"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/ricardoub/shipping",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "font-awesome": "^4.7.0",
+    "jquery": "^3.2.1",
+    "bootstrap": "^3.3.7",
+    "bootstrap-submenu": "^2.0.4"
+  }
+}
