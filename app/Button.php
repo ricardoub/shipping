@@ -14,9 +14,5 @@ class Button extends Model
    *
    * @return Array
    */
-  public function buttonsForLink()
-  {
-    $buttons = Button::where('link', '!=', '')->get();
-    return $buttons;
-  }
+
 }
