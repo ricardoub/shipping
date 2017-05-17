@@ -52,63 +52,186 @@ class TaskController extends Controller
    */
   public function create()
   {
-    //
+    $actions = $this->getActions();
+    $buttons = $this->getButtons();
+    $combos  = $this->getCombos();
+    $options = $this->getOptions();
+    $options['form']['disabled'] = null;
+
+    $task = new \App\Task();
+    $task->user_id = Auth::user()->id;
+
+    return view('tasks.create')
+      ->with([
+        'model'   => $task,
+        'baseUrl' => $this->baseUrl,
+        'actions' => $actions,
+        'buttons' => $buttons,
+        'combos'  => $combos,
+        'options' => $options,
+      ]);
   }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
+  /**
+   * Store a newly created resource in storage.
+   *
+   * @param  \Illuminate\Http\Request  $request
+   * @return \Illuminate\Http\Response
+   */
+  public function store(TaskFormRequest $request)
+  {
+    $actions  = $this->getActions();
+    $messages = $this->getMessages();
+
+    $input = \Request::except('_token');
+    $task = new \App\Task($input);
+    $task->save();
+
+    return redirect()->route($actions['form']['index'])
+      ->with('msgSuccess', $messages['success']['store']);
+  }
+
+  /**
+   * Display the specified resource.
+   *
+   * @param  int  $id
+   * @return \Illuminate\Http\Response
+   */
+  public function show($id)
+  {
+    $actions = $this->getActions();
+    $options = $this->getOptions();
+    $buttons = $this->getButtons();
+    $combos  = $this->getCombos();
+
+    $task = $this->findTask($id);
+    if (is_null($task)) {
+      return redirect()->route($actions['form']['index'])
+        ->withErros([$messages['error']['find']]);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
+    return view('tasks.show')
+      ->with([
+        'model'   => $task,
+        'actions' => $actions,
+        'options' => $options,
+        'buttons' => $buttons,
+        'combos'  => $combos,
+      ]);
+  }
+
+  /**
+   * Show the form for editing the specified resource.
+   *
+   * @param  int  $id
+   * @return \Illuminate\Http\Response
+   */
+  public function edit($id)
+  {
+    $actions = $this->getActions();
+    $options = $this->getOptions();
+    $options['form']['disabled'] = null;
+    $buttons = $this->getButtons();
+    $combos  = $this->getCombos();
+
+    $task = $this->findTask($id);
+    if (is_null($task)) {
+      return redirect()->route($actions['form']['index'])
+        ->withErros([$messages['error']['find']]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
+    return view('tasks.edit')
+      ->with([
+        'model'   => $task,
+        'actions' => $actions,
+        'options' => $options,
+        'buttons' => $buttons,
+        'combos'  => $combos,
+      ]);
+  }
+
+  /**
+   * Update the specified resource in storage.
+   *
+   * @param  \Illuminate\Http\Request  $request
+   * @param  int  $id
+   * @return \Illuminate\Http\Response
+   */
+  public function update(TaskFormRequest $request, $id)
+  {
+    $actions = $this->getActions();
+    $messages = $this->getMessages();
+
+    $task = $this->findTask($id);
+    if (is_null($task)) {
+      return redirect()->route($actions['form']['index'])
+        ->withErrors([$messages['error']['find']]);
+    }
+    $input = \Request::all();
+    $result = $task->update($input);
+    if (!$result) {
+      return redirect()->route($actions['form']['index'])
+        ->withErrors([$messages['error']['update']]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
+    return redirect()->route($actions['form']['index'])
+      ->with('msgSuccess', $messages['success']['update']);
+  }
+
+  /**
+   * Show the form for destroy the specified resource.
+   *
+   * @param  int  $id
+   * @return \Illuminate\Http\Response
+   */
+  public function delete($id)
+  {
+    $actions = $this->getActions();
+    $options = $this->getOptions();
+    $buttons = $this->getButtons();
+    $combos  = $this->getCombos();
+
+    $task = $this->findTask($id);
+    if (is_null($task)) {
+      return redirect()->route($actions['form']['index'])
+        ->withErros([$messages['error']['find']]);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+    return view('tasks.delete')
+      ->with([
+        'model'   => $task,
+        'actions' => $actions,
+        'options' => $options,
+        'buttons' => $buttons,
+        'combos'  => $combos,
+      ]);
+  }
+
+  /**
+   * Remove the specified resource from storage.
+   *
+   * @param  int  $id
+   * @return \Illuminate\Http\Response
+   */
+  public function destroy($id)
+  {
+    $actions  = $this->getActions();
+    $messages = $this->getMessages();
+
+    $task = $this->findTask($id);
+    if (is_null($task)) {
+      return redirect()->route($actions['form']['index'])
+        ->withErrors([$messages['error']['find']]);
+    }
+
+    $result = $task->delete();
+    if (!$result) {
+      return redirect()->route($actions['form']['index'])
+        ->withErrors([$messages['error']['delete']]);
+    }
+
+    return redirect()->route($actions['form']['index'])
+      ->with('msgSuccess', $messages['success']['delete']);
     }
 
     /**
@@ -132,45 +255,15 @@ class TaskController extends Controller
    */
   public function getButtons()
   {
-    //$button = new Button();
-    //$buttons = $button->buttonsForLink();
+    $btns = \App\Button::all();
+    foreach ($btns as $btn) {
+      $buttons[$btn->code]['name']  = $btn->name;
+      $buttons[$btn->code]['link']  = "$this->baseUrl.$btn->link";
+      $buttons[$btn->code]['icon']  = $btn->icon;
+      $buttons[$btn->code]['class'] = $btn->class;
+    }
+    $buttons['home']['link'] = 'home';
 
-    $buttons['back']['name']  = 'Voltar';
-    $buttons['back']['link']  = "$this->baseUrl.index";
-    $buttons['back']['icon']  = 'arrow-left';
-    $buttons['back']['class'] = 'default';
-    $buttons['cancelindex']['name']  = 'Cancelar';
-    $buttons['cancelindex']['link']  = "$this->baseUrl.index";
-    $buttons['cancelindex']['icon']  = 'reply';
-    $buttons['cancelindex']['class'] = 'default';
-    $buttons['create']['name']  = 'Incluir';
-    $buttons['create']['link']  = "$this->baseUrl.create";
-    $buttons['create']['icon']  = 'plus';
-    $buttons['create']['class'] = 'default';
-    $buttons['delete']['name']  = 'Excluir';
-    $buttons['delete']['link']  = "$this->baseUrl.delete";
-    $buttons['delete']['icon']  = 'trash';
-    $buttons['delete']['class'] = 'default';
-    $buttons['destroy']['name']  = 'Excluir';
-    $buttons['destroy']['link']  = "$this->baseUrl.destroy";
-    $buttons['destroy']['icon']  = 'trash';
-    $buttons['destroy']['class'] = 'danger';
-    $buttons['edit']['name']  = 'Editar';
-    $buttons['edit']['link']  = "$this->baseUrl.edit";
-    $buttons['edit']['icon']  = 'edit';
-    $buttons['edit']['class'] = 'default';
-    $buttons['home']['name']  = 'Inicio';
-    $buttons['home']['link']  = 'home';
-    $buttons['home']['icon']  = 'home';
-    $buttons['home']['class'] = 'default';
-    $buttons['show']['name']  = 'Exibir';
-    $buttons['show']['link']  = "$this->baseUrl.show";
-    $buttons['show']['icon']  = 'folder-open-o';
-    $buttons['show']['class'] = 'default';
-    $buttons['store']['name']  = 'Salvar';
-    $buttons['store']['link']  = "$this->baseUrl.store";
-    $buttons['store']['icon']  = 'save';
-    $buttons['store']['class'] = 'primary';
     return $buttons;
   }
   /**
@@ -200,6 +293,7 @@ class TaskController extends Controller
     $messages['success']['delete'] = 'Registro excluído com sucesso!';
     $messages['error']['find']     = 'Registro não localizado!';
     $messages['error']['delete']   = 'Falha ao excluir o registro!';
+    $messages['error']['update']   = 'Falha ao editar o registro!';
 
     return $messages;
   }

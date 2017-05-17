@@ -27,36 +27,52 @@ class AclSeeder extends Seeder
      * PERMISSIONS
      */
     // users
-    $userPermissionMenu    = Permission::where('name', '=', 'user-menu')->first();
-    $userPermissionOwner   = Permission::where('name', '=', 'user-owner')->first();
-    $userPermissionIndex   = Permission::where('name', '=', 'user-index')->first();
-    $userPermissionShow    = Permission::where('name', '=', 'user-show')->first();
-    $userPermissionCreate  = Permission::where('name', '=', 'user-create')->first();
-    $userPermissionEdit    = Permission::where('name', '=', 'user-edit')->first();
-    $userPermissionDelete  = Permission::where('name', '=', 'user-delete')->first();
-    $userPermissionAdmin   = Permission::where('name', '=', 'user-admin')->first();
+    $userPermissionMenu    = Permission::where('name', '=', 'user-menu')->first();    //user#1
+    $userPermissionProfile = Permission::where('name', '=', 'user-profile')->first(); //user#2
+    $userPermissionIndex   = Permission::where('name', '=', 'user-index')->first();   //user#2
+    $userPermissionShow    = Permission::where('name', '=', 'user-show')->first();    //user#2
+    $userPermissionCreate  = Permission::where('name', '=', 'user-create')->first();  //user#3
+    $userPermissionEdit    = Permission::where('name', '=', 'user-edit')->first();    //user#3
+    $userPermissionDelete  = Permission::where('name', '=', 'user-delete')->first();  //user#4
+    $userPermissionAdmin   = Permission::where('name', '=', 'user-admin')->first();   //user#5
+    // tasks
+    $taskPermissionMenu    = Permission::where('name', '=', 'task-menu')->first();    //task#1
+    $taskPermissionIndex   = Permission::where('name', '=', 'task-index')->first();   //task#2
+    $taskPermissionShow    = Permission::where('name', '=', 'task-show')->first();    //task#2
+    $taskPermissionCreate  = Permission::where('name', '=', 'task-create')->first();  //task#2
+    $taskPermissionEdit    = Permission::where('name', '=', 'task-edit')->first();    //task#2
+    $taskPermissionOwner   = Permission::where('name', '=', 'task-owner')->first();   //task#3
+    $taskPermissionDelete  = Permission::where('name', '=', 'task-delete')->first();  //task#4
+    $taskPermissionAdmin   = Permission::where('name', '=', 'task-admin')->first();   //task#5
 
     /*
      * ACL
      */
+    // #1, #2
     $basicRole->attachPermissions(array(
-      $userPermissionMenu, $userPermissionOwner, $userPermissionIndex, $userPermissionShow
+      $userPermissionProfile,
+      $userPermissionMenu, $userPermissionIndex, $userPermissionShow,
+      $taskPermissionMenu, $taskPermissionIndex, $taskPermissionShow,
+      $taskPermissionCreate, $taskPermissionEdit
     ));
-
+    // #2, #3
     $advancedRole->attachPermissions(array(
-      $userPermissionCreate, $userPermissionEdit
+      $userPermissionCreate, $userPermissionEdit,
+      $taskPermissionOwner
     ));
-
+    // #3, #4
     $managerRole->attachPermissions(array(
-      $userPermissionDelete
+      $userPermissionDelete,
+      $taskPermissionDelete
     ));
-
+    // #5
     $adminRole->attachPermissions(array(
-      $userPermissionAdmin
+      $userPermissionAdmin,
+      $taskPermissionAdmin
     ));
 
     /*
-     * USERS
+     * USERS PROFILE
      */
     $basicUser = User::where('name', '=', 'Basic User')->first();
     $basicUser->roles()->attach($basicRole->id);
