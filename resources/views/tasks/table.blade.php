@@ -34,21 +34,21 @@
           </td>
           <td data-label="Ações">
             <span class="input-group-btn input-group">
-              @include('partials.buttons.linkWithId', [
-              'btnName'  => $buttons['show']['name'],
-              'btnLink'  => $buttons['show']['link'],
-              'btnIcon'  => $buttons['show']['icon'],
-              'btnClass' => $buttons['show']['class'],
-              ])
               @permission('task-show')
+                @include('partials.buttons.linkWithId', [
+                  'btnName'  => $buttons['show']['name'],
+                  'btnLink'  => $buttons['show']['link'],
+                  'btnIcon'  => $buttons['show']['icon'],
+                  'btnClass' => $buttons['show']['class'],
+                ])
               @endpermission
-              @include('partials.buttons.linkWithId', [
-              'btnName'  => $buttons['delete']['name'],
-              'btnLink'  => $buttons['delete']['link'],
-              'btnIcon'  => $buttons['delete']['icon'],
-              'btnClass' => $buttons['delete']['class'],
-              ])
               @permission('task-delete')
+                @include('partials.buttons.linkWithId', [
+                  'btnName'  => $buttons['delete']['name'],
+                  'btnLink'  => $buttons['delete']['link'],
+                  'btnIcon'  => $buttons['delete']['icon'],
+                  'btnClass' => $buttons['delete']['class'],
+                ])
               @endpermission
             </span>
           </td>

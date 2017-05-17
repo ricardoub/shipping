@@ -6,7 +6,6 @@
     Listar
     <span class="hidden-xs hidden-sm">Tarefas</span>
   </button>
-  {{ Form::component('bsText', 'components.buttons.link', ['name', 'value', 'attributes']) }}
 @endsection
 
 @section('panel-head-left')
@@ -19,7 +18,8 @@
 @endsection
 
 @section('panel-head-right')
-  @include('partials.buttons.link', [
+  @include('partials.buttons.permissionLink', [
+    'btnAcl'   => 'task-create',
     'btnName'  => $buttons['create']['name'],
     'btnLink'  => $buttons['create']['link'],
     'btnIcon'  => $buttons['create']['icon'],
