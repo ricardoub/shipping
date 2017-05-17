@@ -4,7 +4,7 @@ use Illuminate\Database\Seeder;
 
 use App\Permission;
 
-class PermissionsTableSeeder extends Seeder
+class PermissionsTableSeederUsersPermissions extends Seeder
 {
   /**
    * Run the database seeds.
