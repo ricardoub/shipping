@@ -18,79 +18,118 @@ class AclSeeder extends Seeder
     /*
      * ROLES
      */
-    $basicRole    = Role::where('name', '=', 'basic')->first();
-    $advancedRole = Role::where('name', '=', 'advanced')->first();
-    $managerRole  = Role::where('name', '=', 'manager')->first();
-    $adminRole    = Role::where('name', '=', 'admin')->first();
+    $roleBasic    = Role::where('name', '=', 'basic')->first();
+    $roleAdvanced = Role::where('name', '=', 'advanced')->first();
+    $roleManager  = Role::where('name', '=', 'manager')->first();
+    $roleAdmin    = Role::where('name', '=', 'admin')->first();
 
     /*
      * PERMISSIONS
      */
-    // users
-    $userPermissionMenu    = Permission::where('name', '=', 'user-menu')->first();    //user#1
-    $userPermissionProfile = Permission::where('name', '=', 'user-profile')->first(); //user#2
-    $userPermissionIndex   = Permission::where('name', '=', 'user-index')->first();   //user#2
-    $userPermissionShow    = Permission::where('name', '=', 'user-show')->first();    //user#2
-    $userPermissionCreate  = Permission::where('name', '=', 'user-create')->first();  //user#3
-    $userPermissionEdit    = Permission::where('name', '=', 'user-edit')->first();    //user#3
-    $userPermissionDelete  = Permission::where('name', '=', 'user-delete')->first();  //user#4
-    $userPermissionAdmin   = Permission::where('name', '=', 'user-admin')->first();   //user#5
+    // menus
+    $menuHome         = Permission::where('name', '=', 'home-menu')->first();
+    $menuService      = Permission::where('name', '=', 'service-menu')->first();
+      $menuTask       = Permission::where('name', '=', 'task-menu')->first();
+      $menuTicket     = Permission::where('name', '=', 'ticket-menu')->first();
+
+    $menuDistribution = Permission::where('name', '=', 'distribution-menu')->first();
+
+    $menuAdmin        = Permission::where('name', '=', 'admin-menu')->first();
+      $menuUser       = Permission::where('name', '=', 'user-menu')->first();
+
+    $menuProfile      = Permission::where('name', '=', 'profile-menu')->first();
+
+    // tickets
+    $ticketIndex    = Permission::where('name', '=', 'ticket-index')->first();
+    $ticketShow     = Permission::where('name', '=', 'ticket-show')->first();
+    $ticketCreate   = Permission::where('name', '=', 'ticket-create')->first();
+    $ticketEdit     = Permission::where('name', '=', 'ticket-edit')->first();
+    $ticketOwner    = Permission::where('name', '=', 'ticket-owner')->first();
+    $ticketDelete   = Permission::where('name', '=', 'ticket-delete')->first();
+    $ticketAdmin    = Permission::where('name', '=', 'ticket-admin')->first();
     // tasks
-    $taskPermissionMenu    = Permission::where('name', '=', 'task-menu')->first();    //task#1
-    $taskPermissionIndex   = Permission::where('name', '=', 'task-index')->first();   //task#2
-    $taskPermissionShow    = Permission::where('name', '=', 'task-show')->first();    //task#2
-    $taskPermissionCreate  = Permission::where('name', '=', 'task-create')->first();  //task#2
-    $taskPermissionEdit    = Permission::where('name', '=', 'task-edit')->first();    //task#2
-    $taskPermissionOwner   = Permission::where('name', '=', 'task-owner')->first();   //task#3
-    $taskPermissionDelete  = Permission::where('name', '=', 'task-delete')->first();  //task#4
-    $taskPermissionAdmin   = Permission::where('name', '=', 'task-admin')->first();   //task#5
+    $taskIndex      = Permission::where('name', '=', 'task-index')->first();
+    $taskShow       = Permission::where('name', '=', 'task-show')->first();
+    $taskCreate     = Permission::where('name', '=', 'task-create')->first();
+    $taskEdit       = Permission::where('name', '=', 'task-edit')->first();
+    $taskOwner      = Permission::where('name', '=', 'task-owner')->first();
+    $taskDelete     = Permission::where('name', '=', 'task-delete')->first();
+    $taskAdmin      = Permission::where('name', '=', 'task-admin')->first();
+    // users
+    $userProfile    = Permission::where('name', '=', 'user-prfle')->first();
+    $userIndex      = Permission::where('name', '=', 'user-index')->first();
+    $userShow       = Permission::where('name', '=', 'user-show')->first();
+    $userCreate     = Permission::where('name', '=', 'user-create')->first();
+    $userEdit       = Permission::where('name', '=', 'user-edit')->first();
+    $userDelete     = Permission::where('name', '=', 'user-delete')->first();
+    $userAdmin      = Permission::where('name', '=', 'user-admin')->first();
 
     /*
      * ACL
      */
     // #1, #2
-    $basicRole->attachPermissions(array(
-      $userPermissionProfile,
-      $userPermissionMenu, $userPermissionIndex, $userPermissionShow,
-      $taskPermissionMenu, $taskPermissionIndex, $taskPermissionShow,
-      $taskPermissionCreate, $taskPermissionEdit
+    $roleBasic->attachPermissions(array(
+      $userProfile,
+      $userIndex,   $userShow,
+      $taskIndex,   $taskShow,   $taskCreate,   $taskEdit,
+      $ticketIndex, $ticketShow, $ticketCreate
     ));
     // #2, #3
-    $advancedRole->attachPermissions(array(
-      $userPermissionCreate, $userPermissionEdit,
-      $taskPermissionOwner
+    $roleAdvanced->attachPermissions(array(
+      $userProfile,
+      $userIndex,   $userShow,   $userCreate,   $userEdit,
+      $taskIndex,   $taskShow,   $taskCreate,   $taskEdit, $taskOwner,
+      $ticketIndex, $ticketShow, $ticketCreate, $ticketEdit
     ));
     // #3, #4
-    $managerRole->attachPermissions(array(
-      $userPermissionDelete,
-      $taskPermissionDelete
+    $roleManager->attachPermissions(array(
+      $userProfile,
+      $userIndex,   $userShow,   $userCreate,   $userEdit,
+      $taskIndex,   $taskShow,   $taskCreate,   $taskEdit,   $taskOwner,
+      $ticketIndex, $ticketShow, $ticketCreate, $ticketEdit,
+      $userDelete,  $taskDelete, $ticketDelete
     ));
     // #5
-    $adminRole->attachPermissions(array(
-      $userPermissionAdmin,
-      $taskPermissionAdmin
+    $roleAdmin->attachPermissions(array(
+      $userProfile,
+      $userIndex,   $userShow,   $userCreate,   $userEdit,
+      $taskIndex,   $taskShow,   $taskCreate,   $taskEdit,   $taskOwner,
+      $ticketIndex, $ticketShow, $ticketCreate, $ticketEdit,
+      $userDelete,  $taskDelete, $ticketDelete,
+      $userAdmin,   $taskAdmin,  $ticketAdmin
+    ));
+
+    // menus
+    $roleBasic->attachPermissions(array(
+      $menuHome,         $menuProfile,
+      $menuService,      $menuTask,    $menuTicket,
+    ));
+    $roleAdvanced->attachPermissions(array(
+      $menuHome,         $menuProfile,
+      $menuService,      $menuTask,    $menuTicket,
+      $menuDistribution
+    ));
+    $roleAdmin->attachPermissions(array(
+      $menuHome,         $menuProfile,
+      $menuService,      $menuTask,    $menuTicket,
+      $menuDistribution,
+      $menuAdmin,        $menuUser
     ));
 
     /*
      * USERS PROFILE
      */
-    $basicUser = User::where('name', '=', 'Basic User')->first();
-    $basicUser->roles()->attach($basicRole->id);
+    $profileBasic = User::where('name', '=', 'Basic User')->first();
+    $profileBasic->roles()->attach($roleBasic->id);
 
-    $advancedUser = User::where('name', '=', 'Advanced User')->first();
-    $advancedUser->roles()->attach($basicRole->id);
-    $advancedUser->roles()->attach($advancedRole->id);
+    $profileAdvanced = User::where('name', '=', 'Advanced User')->first();
+    $profileAdvanced->roles()->attach($roleBasic->id);
 
-    $managerUser = User::where('name', '=', 'Manager')->first();
-    $managerUser->roles()->attach($basicRole->id);
-    $managerUser->roles()->attach($advancedRole->id);
-    $managerUser->roles()->attach($managerRole->id);
+    $profileManager = User::where('name', '=', 'Manager')->first();
+    $profileManager->roles()->attach($roleManager->id);
 
-    $adminUser = User::where('name', '=', 'Administrator')->first();
-    $adminUser->roles()->attach($basicRole->id);
-    $adminUser->roles()->attach($advancedRole->id);
-    $adminUser->roles()->attach($managerRole->id);
-    $adminUser->roles()->attach($adminRole->id);
+    $profileAdmin = User::where('name', '=', 'Administrator')->first();
+    $profileAdmin->roles()->attach($roleAdmin->id);
 
   }
 }
