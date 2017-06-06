@@ -14,12 +14,6 @@ class PermissionsTableSeederTasksPermissions extends Seeder
   public function run()
   {
     // tasks
-    $taskMenu = new Permission();
-    $taskMenu->name         = 'task-menu';
-    $taskMenu->display_name = 'Task menu';
-    $taskMenu->description  = 'Allow to view task menu item';
-    $taskMenu->save();
-
     $taskIndex = new Permission();
     $taskIndex->name         = 'task-index';
     $taskIndex->display_name = 'Task List';

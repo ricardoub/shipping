@@ -14,12 +14,6 @@ class PermissionsTableSeederUsersPermissions extends Seeder
   public function run()
   {
     // users
-    $userMenu = new Permission();
-    $userMenu->name         = 'user-menu';
-    $userMenu->display_name = 'User menu';
-    $userMenu->description  = 'Allow to view User menu item';
-    $userMenu->save();
-
     $userIndex = new Permission();
     $userIndex->name         = 'user-index';
     $userIndex->display_name = 'User List';
